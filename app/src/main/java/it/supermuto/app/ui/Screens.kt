@@ -59,22 +59,9 @@ private fun Pagina(content: @Composable () -> Unit) {
 }
 
 
-@Composable
-private fun PulsanteRipristina(onRipristina: () -> Unit) = Button3D(
-    onClick = onRipristina,
-    colori = Arancio,
-    spessore = 10.dp,
-    modifier = Modifier.fillMaxWidth().height(110.dp),
-) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Testo("🔊  RIPRISTINA VOLUME", 25.sp, Color.White)
-        Testo("suoneria normale e volume regolare", 17.sp, Color.White.copy(alpha = 0.92f), bold = false)
-    }
-}
-
 /** Schermata iniziale: un solo, grande pulsante rosso. */
 @Composable
-fun HomeScreen(onSilenzia: () -> Unit, onVibrazione: () -> Unit, onRipristina: () -> Unit, onIconaHome: () -> Unit) = Pagina {
+fun HomeScreen(onSilenzia: () -> Unit, onVibrazione: () -> Unit, onIconaHome: () -> Unit) = Pagina {
     Testo("Super Muto", 40.sp)
     Testo("🔔  Ora il telefono SUONA", 26.sp, InchiostroTenue, bold = false)
     Spacer(Modifier.height(8.dp))
@@ -102,9 +89,6 @@ fun HomeScreen(onSilenzia: () -> Unit, onVibrazione: () -> Unit, onRipristina: (
             Testo("niente suono, ma il telefono vibra", 17.sp, Color.White.copy(alpha = 0.92f), bold = false)
         }
     }
-    Spacer(Modifier.height(8.dp))
-    Testo("Il telefono suona piano o vibra?", 20.sp, InchiostroTenue, bold = false)
-    PulsanteRipristina(onRipristina)
     Spacer(Modifier.height(16.dp))
     Button3D(
         onClick = onIconaHome,
@@ -167,7 +151,7 @@ fun ChooseScreen(vibrazione: Boolean, onScelta: (Int?) -> Unit, onIndietro: () -
 
 /** Telefono muto: grande pulsante verde per riattivare. */
 @Composable
-fun MutedScreen(vibrazione: Boolean, orarioFine: String?, mancano: String?, onRiattiva: () -> Unit, onRipristina: () -> Unit) = Pagina {
+fun MutedScreen(vibrazione: Boolean, orarioFine: String?, mancano: String?, onRiattiva: () -> Unit) = Pagina {
     Testo(if (vibrazione) "📳" else "🔕", 72.sp)
     Testo(if (vibrazione) "Telefono in\nVIBRAZIONE" else "Telefono in\nSILENZIO", 38.sp)
     if (orarioFine != null) {
@@ -189,8 +173,6 @@ fun MutedScreen(vibrazione: Boolean, orarioFine: String?, mancano: String?, onRi
             Testo("RIATTIVA\nSUONO", 32.sp, Color.White)
         }
     }
-    Spacer(Modifier.height(8.dp))
-    PulsanteRipristina(onRipristina)
 }
 
 /** Primo avvio: spiega con parole semplici il permesso "Non disturbare". */

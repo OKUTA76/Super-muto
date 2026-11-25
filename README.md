@@ -4,7 +4,7 @@ App Android semplicissima (pensata per persone anziane) per mettere il telefono 
 
 1. Grande pulsante rosso **SILENZIA**
 2. Scegli: **30 / 60 / 90 / 120 minuti** oppure **Finché lo dico io**
-3. Grande pulsante verde **RIATTIVA SUONO** (anche nella notifica)
+3. Grande pulsante verde **RIATTIVA SUONO** (anche nella notifica): suoneria normale e volume regolare
 
 Allo scadere del tempo il suono torna da solo, anche ad app chiusa o dopo un riavvio.
 La sveglia continua a suonare.

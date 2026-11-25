@@ -20,8 +20,8 @@ data class MuteState(
 
 /**
  * Tutta la logica per mettere e togliere il silenzio.
- * "Riattiva suono" riporta sempre la suoneria normale e spegne "Non disturbare";
- * "Ripristina volume" in più alza il volume se è troppo basso.
+ * "Riattiva suono" riporta la suoneria normale, spegne "Non disturbare"
+ * e alza il volume se è troppo basso.
  */
 object MuteController {
     private const val PREFS = "super_muto"
@@ -102,25 +102,14 @@ object MuteController {
         return true
     }
 
-    /** Riattiva il suono: suoneria normale e "Non disturbare" spento. */
+    /** Riattiva il suono (pulsante verde, notifica, fine del timer). */
     fun unmute(ctx: Context) {
-        val am = audio(ctx)
-        val nm = notif(ctx)
-        try {
-            am.ringerMode = AudioManager.RINGER_MODE_NORMAL
-            // Su alcuni telefoni il silenzio attiva anche "Non disturbare": lo spegniamo.
-            if (hasPermission(ctx) && nm.currentInterruptionFilter != NotificationManager.INTERRUPTION_FILTER_ALL) {
-                nm.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_ALL)
-            }
-        } catch (_: SecurityException) {
-            // Permesso revocato: almeno puliamo lo stato.
-        }
-        clear(ctx)
+        restoreNormal(ctx)
     }
 
     /**
-     * Pulsante "Ripristina volume": qualunque sia la situazione (silenzioso, vibrazione,
-     * Non disturbare, volume a zero), riporta il telefono a suonare a un volume regolare.
+     * Qualunque sia la situazione (silenzioso, vibrazione, Non disturbare, volume a zero),
+     * riporta il telefono a suonare a un volume regolare.
      * Suoneria e notifiche vengono portate almeno al 70% del massimo.
      */
     fun restoreNormal(ctx: Context): Boolean {

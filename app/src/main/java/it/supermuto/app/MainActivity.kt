@@ -78,7 +78,6 @@ class MainActivity : ComponentActivity() {
                                 stato = MuteController.read(this@MainActivity)
                                 Toast.makeText(this@MainActivity, "🔔 Suono riattivato", Toast.LENGTH_SHORT).show()
                             },
-                            onRipristina = ::ripristina,
                         )
 
                         scegli -> ChooseScreen(
@@ -101,20 +100,12 @@ class MainActivity : ComponentActivity() {
                         else -> HomeScreen(
                             onSilenzia = { vibrazione = false; scegli = true },
                             onVibrazione = { vibrazione = true; scegli = true },
-                            onRipristina = ::ripristina,
                             onIconaHome = ::iconaSullaHome,
                         )
                     }
                 }
             }
         }
-    }
-
-    private fun ripristina() {
-        val ok = MuteController.restoreNormal(this)
-        stato = MuteController.read(this)
-        val msg = if (ok) "🔊 Volume ripristinato" else "Non riesco a cambiare il volume: controlla il permesso"
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
     }
 
     /** Chiede al telefono di aggiungere l'icona di Super Muto nella schermata Home. */
