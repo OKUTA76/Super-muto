@@ -79,7 +79,6 @@ class MainActivity : ComponentActivity() {
                                 Toast.makeText(this@MainActivity, "🔔 Suono riattivato", Toast.LENGTH_SHORT).show()
                             },
                             onRipristina = ::ripristina,
-                            onIconaHome = ::iconaSullaHome,
                         )
 
                         scegli -> ChooseScreen(
