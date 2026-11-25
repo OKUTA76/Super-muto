@@ -7,5 +7,5 @@
         <item name="android:navigationBarColor">@color/sfondo</item>
     </style>
     <color name="sfondo">#FFFFF6E5</color>
-    <color name="icona_sfondo">#FFE53935</color>
+    <color name="icona_sfondo">#FFFFF6E5</color>
 </resources>

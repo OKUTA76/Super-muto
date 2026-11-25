@@ -2,6 +2,9 @@ package it.supermuto.app
 
 import android.Manifest
 import android.content.Intent
+import android.content.pm.ShortcutInfo
+import android.content.pm.ShortcutManager
+import android.graphics.drawable.Icon
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
@@ -76,6 +79,7 @@ class MainActivity : ComponentActivity() {
                                 Toast.makeText(this@MainActivity, "🔔 Suono riattivato", Toast.LENGTH_SHORT).show()
                             },
                             onRipristina = ::ripristina,
+                            onIconaHome = ::iconaSullaHome,
                         )
 
                         scegli -> ChooseScreen(
@@ -99,6 +103,7 @@ class MainActivity : ComponentActivity() {
                             onSilenzia = { vibrazione = false; scegli = true },
                             onVibrazione = { vibrazione = true; scegli = true },
                             onRipristina = ::ripristina,
+                            onIconaHome = ::iconaSullaHome,
                         )
                     }
                 }
@@ -111,6 +116,30 @@ class MainActivity : ComponentActivity() {
         stato = MuteController.read(this)
         val msg = if (ok) "🔊 Volume ripristinato" else "Non riesco a cambiare il volume: controlla il permesso"
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+    }
+
+    /** Chiede al telefono di aggiungere l'icona di Super Muto nella schermata Home. */
+    private fun iconaSullaHome() {
+        val sm = getSystemService(ShortcutManager::class.java)
+        if (sm == null || !sm.isRequestPinShortcutSupported) {
+            Toast.makeText(
+                this,
+                "Il telefono non lo permette da qui: apri l'elenco delle app, tieni premuto Super Muto e trascinalo sulla Home",
+                Toast.LENGTH_LONG,
+            ).show()
+            return
+        }
+        val info = ShortcutInfo.Builder(this, "super_muto_home")
+            .setShortLabel(getString(R.string.app_name))
+            .setIcon(Icon.createWithResource(this, R.mipmap.ic_launcher))
+            .setIntent(
+                Intent(this, MainActivity::class.java)
+                    .setAction(Intent.ACTION_MAIN)
+                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            )
+            .build()
+        sm.requestPinShortcut(info, null)
+        Toast.makeText(this, "Premi «Aggiungi» per mettere l'icona sulla Home", Toast.LENGTH_LONG).show()
     }
 
     private fun apriPermesso() {

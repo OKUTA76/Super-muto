@@ -74,7 +74,7 @@ private fun PulsanteRipristina(onRipristina: () -> Unit) = Button3D(
 
 /** Schermata iniziale: un solo, grande pulsante rosso. */
 @Composable
-fun HomeScreen(onSilenzia: () -> Unit, onVibrazione: () -> Unit, onRipristina: () -> Unit) = Pagina {
+fun HomeScreen(onSilenzia: () -> Unit, onVibrazione: () -> Unit, onRipristina: () -> Unit, onIconaHome: () -> Unit) = Pagina {
     Testo("Super Muto", 40.sp)
     Testo("🔔  Ora il telefono SUONA", 26.sp, InchiostroTenue, bold = false)
     Spacer(Modifier.height(8.dp))
@@ -105,6 +105,15 @@ fun HomeScreen(onSilenzia: () -> Unit, onVibrazione: () -> Unit, onRipristina: (
     Spacer(Modifier.height(8.dp))
     Testo("Il telefono suona piano o vibra?", 20.sp, InchiostroTenue, bold = false)
     PulsanteRipristina(onRipristina)
+    Spacer(Modifier.height(16.dp))
+    Button3D(
+        onClick = onIconaHome,
+        colori = Grigio,
+        spessore = 8.dp,
+        modifier = Modifier.fillMaxWidth().height(84.dp),
+    ) {
+        Testo("📌  Metti l'icona sulla Home", 22.sp)
+    }
 }
 
 /** Seconda schermata: per quanto tempo? */
