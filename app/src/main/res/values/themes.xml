@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.SuperMuto" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@color/sfondo</item>
+        <item name="android:statusBarColor">@color/sfondo</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:navigationBarColor">@color/sfondo</item>
+    </style>
+    <color name="sfondo">#FFFFF6E5</color>
+    <color name="icona_sfondo">#FFE53935</color>
+</resources>
