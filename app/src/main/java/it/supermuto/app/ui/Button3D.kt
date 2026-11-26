@@ -63,6 +63,8 @@ fun Button3D(
     )
     val haptic = LocalHapticFeedback.current
 
+    // propagateMinConstraints: la faccia riempie almeno la misura data dal modifier,
+    // ma cresce se il testo è più grande (caratteri grandi impostati sul telefono).
     Box(
         modifier = modifier.clickable(
             interactionSource = interaction,
@@ -72,6 +74,7 @@ fun Button3D(
             haptic.performHapticFeedback(HapticFeedbackType.LongPress)
             onClick()
         },
+        propagateMinConstraints = true,
     ) {
         // Spessore / lato del pulsante, con ombra a terra
         Box(
@@ -84,7 +87,6 @@ fun Button3D(
         // Faccia superiore, lucida, che si abbassa quando premuta
         Box(
             modifier = Modifier
-                .matchParentSize()
                 .padding(bottom = spessore)
                 .offset(y = discesa)
                 .background(
@@ -93,7 +95,8 @@ fun Button3D(
                     ),
                     shape,
                 )
-                .border(3.dp, lerp(colori.faccia, Color.White, 0.45f), shape),
+                .border(3.dp, lerp(colori.faccia, Color.White, 0.45f), shape)
+                .padding(horizontal = 12.dp, vertical = 10.dp),
             contentAlignment = Alignment.Center,
             content = content,
         )

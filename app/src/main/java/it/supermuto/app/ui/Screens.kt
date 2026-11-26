@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
@@ -92,7 +93,7 @@ fun HomeScreen(onSilenzia: () -> Unit, onIconaHome: () -> Unit) = Pagina {
         onClick = onIconaHome,
         colori = Grigio,
         spessore = 8.dp,
-        modifier = Modifier.fillMaxWidth().height(84.dp),
+        modifier = Modifier.fillMaxWidth().heightIn(min = 84.dp),
     ) {
         Testo("📌  Metti l'icona sulla Home", 22.sp)
     }
@@ -127,9 +128,9 @@ private fun CasellaVibrazione(attiva: Boolean, onCambia: (Boolean) -> Unit) {
             if (attiva) Text("✓", fontSize = 36.sp, fontWeight = FontWeight.ExtraBold, color = Color.White)
         }
         Column(Modifier.weight(1f)) {
-            Text("📳 Con vibrazione", fontSize = 26.sp, fontWeight = FontWeight.ExtraBold, color = Inchiostro)
+            Text("📳 Vibrazione", fontSize = 26.sp, fontWeight = FontWeight.ExtraBold, color = Inchiostro)
             Text(
-                if (attiva) "niente suono, ma il telefono vibra" else "spenta: il telefono resta del tutto muto",
+                if (attiva) "ACCESA: il telefono vibra" else "spenta: resta del tutto muto",
                 fontSize = 18.sp, color = InchiostroTenue, lineHeight = 22.sp,
             )
         }
@@ -144,19 +145,19 @@ fun ChooseScreen(
     onScelta: (Int?) -> Unit,
     onIndietro: () -> Unit,
 ) = Pagina {
-    Testo("Per quanto tempo?", 36.sp)
+    Testo("Per quanto tempo?", 32.sp)
     CasellaVibrazione(vibrazione, onVibrazione)
 
     @Composable
     fun Durata(minuti: Int, sotto: String, colori: Colori3D, modifier: Modifier) = Button3D(
         onClick = { onScelta(minuti) },
         colori = colori,
-        modifier = modifier.height(150.dp),
+        modifier = modifier.heightIn(min = 140.dp),
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Testo("$minuti", 54.sp, Color.White)
             Testo("minuti", 22.sp, Color.White)
-            Testo(sotto, 17.sp, Color.White.copy(alpha = 0.9f), bold = false)
+            Testo(sotto, 16.sp, Color.White.copy(alpha = 0.9f), bold = false)
         }
     }
 
@@ -165,16 +166,16 @@ fun ChooseScreen(
         Durata(60, "1 ora", Blu, Modifier.weight(1f))
     }
     Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-        Durata(90, "1 ora e mezza", Blu, Modifier.weight(1f))
+        Durata(90, "1 ora e ½", Blu, Modifier.weight(1f))
         Durata(120, "2 ore", Blu, Modifier.weight(1f))
     }
     Button3D(
         onClick = { onScelta(null) },
         colori = Viola,
-        modifier = Modifier.fillMaxWidth().height(130.dp),
+        modifier = Modifier.fillMaxWidth().heightIn(min = 110.dp),
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Testo("✋  FINCHÉ LO DICO IO", 26.sp, Color.White)
+            Testo("✋  MANUALE", 30.sp, Color.White)
             Testo("si riattiva solo col pulsante verde", 17.sp, Color.White.copy(alpha = 0.9f), bold = false)
         }
     }
@@ -183,7 +184,7 @@ fun ChooseScreen(
         onClick = onIndietro,
         colori = Grigio,
         spessore = 8.dp,
-        modifier = Modifier.fillMaxWidth().height(84.dp),
+        modifier = Modifier.fillMaxWidth().heightIn(min = 84.dp),
     ) {
         Testo("⬅  Indietro", 24.sp)
     }
@@ -231,7 +232,7 @@ fun PermissionScreen(onApriImpostazioni: () -> Unit) = Pagina {
     Button3D(
         onClick = onApriImpostazioni,
         colori = Blu,
-        modifier = Modifier.fillMaxWidth().height(130.dp),
+        modifier = Modifier.fillMaxWidth().heightIn(min = 130.dp),
     ) {
         Testo("⚙️  DAI IL PERMESSO", 28.sp, Color.White)
     }
