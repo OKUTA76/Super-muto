@@ -1,6 +1,15 @@
 package it.supermuto.app.ui
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.selection.toggleable
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.semantics.Role
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -61,7 +70,7 @@ private fun Pagina(content: @Composable () -> Unit) {
 
 /** Schermata iniziale: un solo, grande pulsante rosso. */
 @Composable
-fun HomeScreen(onSilenzia: () -> Unit, onVibrazione: () -> Unit, onIconaHome: () -> Unit) = Pagina {
+fun HomeScreen(onSilenzia: () -> Unit, onIconaHome: () -> Unit) = Pagina {
     Testo("Super Muto", 40.sp)
     Testo("🔔  Ora il telefono SUONA", 26.sp, InchiostroTenue, bold = false)
     Spacer(Modifier.height(8.dp))
@@ -78,17 +87,6 @@ fun HomeScreen(onSilenzia: () -> Unit, onVibrazione: () -> Unit, onIconaHome: ()
         }
     }
     Testo("Premi il pulsante rosso\nper mettere il telefono muto", 22.sp, InchiostroTenue, bold = false)
-    Button3D(
-        onClick = onVibrazione,
-        colori = Turchese,
-        spessore = 10.dp,
-        modifier = Modifier.fillMaxWidth().height(110.dp),
-    ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Testo("📳  VIBRAZIONE", 28.sp, Color.White)
-            Testo("niente suono, ma il telefono vibra", 17.sp, Color.White.copy(alpha = 0.92f), bold = false)
-        }
-    }
     Spacer(Modifier.height(16.dp))
     Button3D(
         onClick = onIconaHome,
@@ -100,12 +98,54 @@ fun HomeScreen(onSilenzia: () -> Unit, onVibrazione: () -> Unit, onIconaHome: ()
     }
 }
 
+/** Grande casella di spunta: se accesa il telefono vibra, altrimenti resta del tutto muto. */
+@Composable
+private fun CasellaVibrazione(attiva: Boolean, onCambia: (Boolean) -> Unit) {
+    val haptic = LocalHapticFeedback.current
+    val forma = RoundedCornerShape(22.dp)
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(forma)
+            .background(if (attiva) Color(0xFFDDF3F5) else Color.White, forma)
+            .border(3.dp, if (attiva) Color(0xFF0E9AA7) else Color(0xFFB9BEC7), forma)
+            .toggleable(value = attiva, role = Role.Checkbox) {
+                haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                onCambia(it)
+            }
+            .padding(horizontal = 18.dp, vertical = 16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+        Box(
+            modifier = Modifier
+                .size(52.dp)
+                .background(if (attiva) Color(0xFF0E9AA7) else Color.White, RoundedCornerShape(12.dp))
+                .border(3.dp, if (attiva) Color(0xFF075961) else Color(0xFF7A808A), RoundedCornerShape(12.dp)),
+            contentAlignment = Alignment.Center,
+        ) {
+            if (attiva) Text("✓", fontSize = 36.sp, fontWeight = FontWeight.ExtraBold, color = Color.White)
+        }
+        Column(Modifier.weight(1f)) {
+            Text("📳 Con vibrazione", fontSize = 26.sp, fontWeight = FontWeight.ExtraBold, color = Inchiostro)
+            Text(
+                if (attiva) "niente suono, ma il telefono vibra" else "spenta: il telefono resta del tutto muto",
+                fontSize = 18.sp, color = InchiostroTenue, lineHeight = 22.sp,
+            )
+        }
+    }
+}
+
 /** Seconda schermata: per quanto tempo? */
 @Composable
-fun ChooseScreen(vibrazione: Boolean, onScelta: (Int?) -> Unit, onIndietro: () -> Unit) = Pagina {
-    Testo(if (vibrazione) "📳 Vibrazione" else "🔕 Silenzio", 26.sp, InchiostroTenue)
+fun ChooseScreen(
+    vibrazione: Boolean,
+    onVibrazione: (Boolean) -> Unit,
+    onScelta: (Int?) -> Unit,
+    onIndietro: () -> Unit,
+) = Pagina {
     Testo("Per quanto tempo?", 36.sp)
-    Testo("Tocca un pulsante", 22.sp, InchiostroTenue, bold = false)
+    CasellaVibrazione(vibrazione, onVibrazione)
 
     @Composable
     fun Durata(minuti: Int, sotto: String, colori: Colori3D, modifier: Modifier) = Button3D(

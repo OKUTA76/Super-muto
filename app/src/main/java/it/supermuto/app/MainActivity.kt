@@ -82,6 +82,7 @@ class MainActivity : ComponentActivity() {
 
                         scegli -> ChooseScreen(
                             vibrazione = vibrazione,
+                            onVibrazione = { vibrazione = it },
                             onScelta = { minuti ->
                                 val ok = MuteController.mute(this@MainActivity, minuti, vibrazione)
                                 scegli = false
@@ -99,7 +100,6 @@ class MainActivity : ComponentActivity() {
 
                         else -> HomeScreen(
                             onSilenzia = { vibrazione = false; scegli = true },
-                            onVibrazione = { vibrazione = true; scegli = true },
                             onIconaHome = ::iconaSullaHome,
                         )
                     }
